@@ -1,14 +1,14 @@
 import random
-from collections import Counter
+from collections import Counter, defaultdict
 import nltk
 
 class markov(object):
     def __init__(self, corpus, n_grams, min_length):       
-        """
+        '''
         corpus = list of string text ["speech1", "speech2", ..., "speechn"]
         n_grams = max sequence length
         min_length = minimum number of next words required for back-off scheme       
-        """
+        '''
         self.grams = {}
         self.n_grams = n_grams
         self.corpus = corpus   
@@ -16,9 +16,11 @@ class markov(object):
         self.sequences()
 
     def tokenizer(self, speech, gram):
-        """tokenize speeches in corpus, i.e. split speeches into words"""
-        tokenized_speech = nltk.word_tokenize(speech)
-            
+        '''
+        tokenize speeches in corpus, i.e. split speeches into words
+        
+        '''        
+        tokenized_speech = nltk.word_tokenize(speech)            
         if len(tokenized_speech) < gram:
             pass       
         else:
@@ -31,15 +33,12 @@ class markov(object):
         along with the pool of next words.
         """        
         for gram in range(1, self.n_grams + 1):
-            dictionary = {}            
+            dictionary = defaultdict(list)            
             for speech in self.corpus:               
                 for sequence in self.tokenizer(speech, gram):
                     key_id = tuple(sequence[0:-1])
-                    
-                    if key_id in dictionary:
-                        dictionary[key_id].append(sequence[gram])
-                    else:
-                        dictionary[key_id] = [sequence[gram]]                        
+                    dictionary[key_id].append(sequence[gram])
+                      
             self.grams[gram] = dictionary
     
     def next_word(self, key_id):
