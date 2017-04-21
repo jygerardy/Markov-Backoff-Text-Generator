@@ -1,5 +1,5 @@
 import random
-from collections import Counter, defaultdict
+from collections import defaultdict
 import nltk
 
 class markov(object):
@@ -17,8 +17,7 @@ class markov(object):
 
     def tokenizer(self, speech, gram):
         '''
-        tokenize speeches in corpus, i.e. split speeches into words
-        
+        tokenize speeches in corpus, i.e. split speeches into words       
         '''        
         tokenized_speech = nltk.word_tokenize(speech)            
         if len(tokenized_speech) < gram:
